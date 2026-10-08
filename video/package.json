@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fontsource/anton": "^5.0.19",
     "@fontsource/montserrat": "^5.0.19"
   }
 }

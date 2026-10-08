@@ -1,14 +1,26 @@
 [
-  {"id": "hook",   "text": "Сдаёте квартиру в Дубае под посуточную аренду? Вот что вам не скажут.",
-   "caption": "Сдаёте квартиру в Дубае посуточно?", "card": null},
-  {"id": "who",    "text": "Реферальный агент — просто посредник. Он приводит вас в управляющую компанию и получает за это комиссию.",
-   "caption": "Реферальный агент — просто посредник", "card": "agent"},
-  {"id": "paid",   "text": "Платит ему компания: например, до пяти тысяч дирхамов, или процент с вашего дохода. А иногда платите и вы.",
-   "caption": "Ему платят за то, что он привёл вас", "card": "money"},
-  {"id": "fee",    "text": "При этом управляющая компания и так берёт свои пятнадцать — двадцать пять процентов.",
-   "caption": "Управляющая компания и так берёт 15–25%", "card": "fee"},
-  {"id": "direct", "text": "Агент вам не нужен. Проверьте лицензию компании, сравните условия и подпишите договор напрямую.",
-   "caption": "Агент не нужен. Идите напрямую", "card": "check"},
-  {"id": "outro",  "text": "Без посредников. Без лишних комиссий.",
-   "caption": "Без посредников. Без лишних комиссий.", "card": "outro"}
+ {
+  "id": "hook",
+  "text": "Renting out your Dubai apartment short-term? Here's what nobody tells you."
+ },
+ {
+  "id": "who",
+  "text": "A referral agent is just a middleman. He brings you to a management company, and gets paid for it."
+ },
+ {
+  "id": "paid",
+  "text": "The company pays him: up to five thousand dirhams, or a cut of your rental income. Sometimes, you pay too."
+ },
+ {
+  "id": "fee",
+  "text": "And the management company already takes fifteen to twenty-five percent."
+ },
+ {
+  "id": "direct",
+  "text": "So, you don't need an agent. Check the company's license, compare the terms, and sign directly."
+ },
+ {
+  "id": "outro",
+  "text": "No middleman. No extra fees."
+ }
 ]
