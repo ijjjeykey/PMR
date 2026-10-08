@@ -9,9 +9,15 @@ const fs = require('fs'), path = require('path');
   const tl = JSON.parse(fs.readFileSync(path.join(buildDir, 'timeline.json'), 'utf8'));
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
-  await page.addInitScript(t => { window.TIMELINE = t; }, tl);
+  await page.addInitScript(([t, c]) => { window.TIMELINE = t; window.COVER = c; }, [tl, flag === '--cover']);
   await page.goto('file://' + path.join(__dirname, 'scene.html'));
   await page.evaluate(() => document.fonts.ready);
+  if (flag === '--cover') {
+    await page.evaluate(() => render(4.45));
+    await page.evaluate(() => { const m = document.getElementById('man'); m.style.transform = 'translateY(180px)'; m.style.opacity = 1; });
+    await page.screenshot({ path: out });
+    return browser.close();
+  }
   if (flag === '--preview') {
     for (const t of list.split(',').map(Number)) {
       await page.evaluate(t => render(t), t);

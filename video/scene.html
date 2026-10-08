@@ -51,6 +51,19 @@
   #bar { left: 0; bottom: 0; height: 10px; background: var(--blue); }
   #src { left: 0; right: 0; bottom: 34px; text-align: center; font-weight: 700; font-size: 26px; color: rgba(255,255,255,.6); letter-spacing: .5px; }
   #src b { color: #fff; }
+
+  /* Cover mode (?cover): static thumbnail, text kept inside the 4:5 / 3:4 grid-safe area */
+  body.cover #top, body.cover .card, body.cover #cap, body.cover #bar { display: none; }
+  #cv { display: none; left: 0; right: 0; text-align: center; }
+  body.cover #cv { display: block; }
+  #cvTop { top: 250px; }
+  #cvTop .tag { font-size: 40px; }
+  #cvTop .h { font-family: A; text-transform: uppercase; font-size: 150px; line-height: .95; margin-top: 18px; text-shadow: 0 10px 0 rgba(3,14,26,.35); }
+  #cvTop .q { display: inline-block; margin-top: 18px; padding: 10px 36px 4px; background: var(--ink); font-family: A; font-size: 96px; line-height: 1; text-transform: uppercase; transform: skewX(-8deg); }
+  #cvBot { top: 1420px; }
+  #cvBot .s { display: inline-block; padding: 18px 40px 12px; background: #fff; color: var(--blue); font-family: A; font-size: 78px; text-transform: uppercase; transform: skewX(-8deg); box-shadow: 12px 12px 0 var(--ink); }
+  #cvBot .s b { color: var(--ink); font-weight: 400; }
+  #cvBot .sub { margin-top: 34px; font-weight: 800; font-size: 40px; }
 </style>
 </head>
 <body>
@@ -219,6 +232,10 @@
     <div class="A" style="text-align:center;font-size:62px;margin-top:20px" id="zero">Middleman fee: <span style="color:var(--green)">0 AED</span></div>
   </div>
 
+  <div id="cv" class="abs" style="top:0;bottom:0">
+    <div id="cvTop" class="abs" style="left:0;right:0"><div class="tag">FOR DUBAI PROPERTY OWNERS</div><div class="h">Referral agent</div><div class="q">Do you need one?</div></div>
+    <div id="cvBot" class="abs" style="left:0;right:0"><div class="s">Don’t pay <b>a middleman</b></div><div class="sub">Holiday homes in Dubai · 30-second guide</div></div>
+  </div>
   <div id="cap" class="abs"></div>
   <div id="src" class="abs"><b>@dubai_property_owners</b> · propertymanagement-review.com</div>
   <div id="bar" class="abs"></div>
@@ -285,6 +302,7 @@ let lastCapKey = '';
 const cards = { hook: 'c-hook', who: 'c-agent', paid: 'c-money', fee: 'c-fee', direct: 'c-check', outro: 'c-outro' };
 const BLINKS = [1.9, 5.2, 8.6, 11.4, 14.8, 17.9, 21.2, 24.3, 27.0];
 
+if (window.COVER) document.body.classList.add('cover');
 window.render = function (t) {
   const fi = Math.min(T.mouth.length - 1, Math.floor(t * T.fps));
   const m = T.mouth[fi];
