@@ -128,7 +128,7 @@
         <clipPath id="eL"><ellipse cx="258" cy="212" rx="21" ry="12"/></clipPath>
         <clipPath id="eR"><ellipse cx="342" cy="212" rx="21" ry="12"/></clipPath>
       </defs>
-      <g id="torso">
+      <g id="torso" transform="translate(300 0) scale(0.78 1) translate(-300 0)">
         <path class="o" d="M262 320 L 262 425 Q 300 445 338 425 L 338 320 Z" fill="#d9a07a"/>
         <path d="M262 380 Q 300 420 338 380 L 338 425 Q 300 445 262 425 Z" fill="#b97e5c" opacity=".5"/>
         <path class="o" d="M235 420 L 365 420 L 345 560 L 300 610 L 255 560 Z" fill="#dbe8f7"/>
@@ -140,7 +140,7 @@
         <circle cx="300" cy="700" r="8" fill="#0d1428"/><circle cx="300" cy="760" r="8" fill="#0d1428"/>
         <path d="M392 580 L 440 572 L 442 584 L 394 592 Z" fill="#fff" stroke="#1a1410" stroke-width="3"/>
       </g>
-      <g id="head">
+      <g id="head"><g transform="translate(300 0) scale(0.93 1) translate(-300 0)">
         <ellipse class="o" cx="216" cy="232" rx="15" ry="27" fill="#e2ab84"/>
         <ellipse class="o" cx="384" cy="232" rx="15" ry="27" fill="#cf966f"/>
         <path class="o" d="M218 200 C 218 128, 256 92, 300 92 C 344 92, 382 128, 382 200 C 384 255, 378 300, 362 330 C 346 360, 324 378, 300 378 C 276 378, 254 360, 238 330 C 222 300, 216 255, 218 200 Z" fill="url(#sk)"/>
@@ -166,8 +166,8 @@
         <path class="o" d="M236 112 C 250 62, 330 46, 372 86 C 346 76, 306 74, 280 92 C 268 86, 252 94, 236 112 Z" fill="#3a281c"/>
         <path d="M262 132 C 290 120, 330 118, 362 140" stroke="#5b4332" stroke-width="3" fill="none"/>
         <path d="M280 96 C 310 86, 340 90, 360 104" stroke="#5b4332" stroke-width="3" fill="none"/>
-      </g>
-      <g id="prophold"></g>
+      </g></g>
+      <g id="prophold" transform="translate(300 0) scale(0.82 1) translate(-300 0)"></g>
       <g id="armA"></g>
       <g id="armB"></g>
     </svg>
@@ -205,10 +205,10 @@ const HANDS = {
          <path d="M-14 -58 V -46 M 0 -58 V -46 M 14 -58 V -46" stroke="#a86e4d" stroke-width="3" stroke-linecap="round"/>`
 };
 function makeArm(g) {
-  g.innerHTML = `<path class="sl0" fill="none" stroke="#1a1410" stroke-width="82" stroke-linecap="round" stroke-linejoin="round"/>
-                 <path class="sl1" fill="none" stroke="#1f2d52" stroke-width="74" stroke-linecap="round" stroke-linejoin="round"/>
-                 <path class="sl2" fill="none" stroke="#2a3b69" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
-                 <line class="cuff0" stroke="#1a1410" stroke-width="64"/><line class="cuff" stroke="#eef4fb" stroke-width="56"/>
+  g.innerHTML = `<path class="sl0" fill="none" stroke="#1a1410" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
+                 <path class="sl1" fill="none" stroke="#1f2d52" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
+                 <path class="sl2" fill="none" stroke="#2a3b69" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+                 <line class="cuff0" stroke="#1a1410" stroke-width="46"/><line class="cuff" stroke="#eef4fb" stroke-width="38"/>
                  <g class="hand"></g>`;
   return { g, sl: [...g.querySelectorAll('.sl0,.sl1,.sl2')], c0: g.querySelector('.cuff0'), c: g.querySelector('.cuff'), h: g.querySelector('.hand'), type: null };
 }
@@ -219,22 +219,22 @@ function setArm(a, sh, el, wr, hand, rot, mirror) {
   const dx = wr[0] - el[0], dy = wr[1] - el[1], L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L;
   [a.c0, a.c].forEach((c, i) => { c.setAttribute('x1', wr[0] - ux * (i ? 20 : 22)); c.setAttribute('y1', wr[1] - uy * (i ? 20 : 22)); c.setAttribute('x2', wr[0] + ux * (i ? 2 : 4)); c.setAttribute('y2', wr[1] + uy * (i ? 2 : 4)); });
   if (a.type !== hand) { a.h.innerHTML = HANDS[hand]; a.type = hand; }
-  a.h.setAttribute('transform', `translate(${wr[0]} ${wr[1]}) rotate(${rot}) scale(${mirror ? -1.18 : 1.18} 1.18)`);
+  a.h.setAttribute('transform', `translate(${wr[0]} ${wr[1]}) rotate(${rot}) scale(${mirror ? -0.95 : 0.95} 0.95)`);
 }
 // Shoulders. A = viewer-left arm (character's right), B = viewer-right arm.
-const SA = [190, 478], SB = [410, 478];
-const IDLE_A = { el: [150, 640], wr: [168, 790], hand: 'fist', rot: 180 };
-const IDLE_B = { el: [450, 640], wr: [432, 790], hand: 'fist', rot: 180 };
+const SA = [222, 474], SB = [378, 474];
+const IDLE_A = { el: [177, 640], wr: [192, 790], hand: 'fist', rot: 180 };
+const IDLE_B = { el: [423, 640], wr: [408, 790], hand: 'fist', rot: 180 };
 const POSES = {
-  shock:   { A: { el: [118, 560], wr: [196, 404], hand: 'open', rot: 12 },  B: { el: [482, 560], wr: [404, 404], hand: 'open', rot: -12 } },
-  stop:    { A: IDLE_A, B: { el: [520, 560], wr: [462, 392], hand: 'open', rot: -6 } },
-  pointL:  { A: { el: [112, 470], wr: [70, 360], hand: 'point', rot: -38 }, B: IDLE_B },
-  hold:    { A: { el: [110, 690], wr: [168, 610], hand: 'fist', rot: 80 }, B: { el: [490, 690], wr: [432, 610], hand: 'fist', rot: -80 } },
-  pointUp: { A: IDLE_A, B: { el: [520, 570], wr: [492, 410], hand: 'point', rot: -4 } },
-  think:   { A: { el: [170, 660], wr: [392, 660], hand: 'fist', rot: 95 }, B: { el: [420, 650], wr: [330, 452], hand: 'fist', rot: -22 }, order: 'AB' },
-  cross:   { A: { el: [150, 640], wr: [404, 612], hand: 'fist', rot: 100 }, B: { el: [450, 640], wr: [196, 612], hand: 'fist', rot: -100 }, order: 'BA' },
-  explain: { A: { el: [120, 640], wr: [118, 500], hand: 'open', rot: -28 }, B: { el: [480, 640], wr: [482, 500], hand: 'open', rot: 28 } },
-  thumbs:  { A: IDLE_A, B: { el: [510, 630], wr: [478, 488], hand: 'thumb', rot: 0 } }
+  shock:   { A: { el: [151, 560], wr: [215, 404], hand: 'open', rot: 12 },  B: { el: [449, 560], wr: [385, 404], hand: 'open', rot: -12 } },
+  stop:    { A: IDLE_A, B: { el: [480, 560], wr: [433, 392], hand: 'open', rot: -6 } },
+  pointL:  { A: { el: [146, 470], wr: [111, 360], hand: 'point', rot: -38 }, B: IDLE_B },
+  hold:    { A: { el: [144, 690], wr: [192, 610], hand: 'fist', rot: 80 }, B: { el: [456, 690], wr: [408, 610], hand: 'fist', rot: -80 } },
+  pointUp: { A: IDLE_A, B: { el: [480, 570], wr: [457, 410], hand: 'point', rot: -4 } },
+  think:   { A: { el: [193, 660], wr: [375, 660], hand: 'fist', rot: 95 }, B: { el: [398, 650], wr: [325, 452], hand: 'fist', rot: -22 }, order: 'AB' },
+  cross:   { A: { el: [177, 640], wr: [385, 612], hand: 'fist', rot: 100 }, B: { el: [423, 640], wr: [215, 612], hand: 'fist', rot: -100 }, order: 'BA' },
+  explain: { A: { el: [152, 640], wr: [151, 500], hand: 'open', rot: -28 }, B: { el: [448, 640], wr: [449, 500], hand: 'open', rot: 28 } },
+  thumbs:  { A: IDLE_A, B: { el: [472, 630], wr: [446, 488], hand: 'thumb', rot: 0 } }
 };
 
 // ---------- scenes ----------
