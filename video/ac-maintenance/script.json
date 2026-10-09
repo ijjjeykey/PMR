@@ -1,0 +1,52 @@
+[
+ {
+  "id": "leak",
+  "headline": "AC leaking?",
+  "text": "Your AC is leaking, and you just keep wiping it?"
+ },
+ {
+  "id": "stop",
+  "headline": "Don't just wipe it",
+  "text": "Hold on. A leak is a symptom, not a diagnosis."
+ },
+ {
+  "id": "causes",
+  "headline": "Common causes",
+  "text": "A clogged drain, a faulty drain pan, an iced coil. And it can wreck your ceiling."
+ },
+ {
+  "id": "filter",
+  "headline": "Clean the filters",
+  "text": "Filters first. Deewa says clean them at least once a month in summer."
+ },
+ {
+  "id": "thermo",
+  "headline": "Set it to 24°C",
+  "text": "Thermostat on twenty-four. Every degree higher saves up to five percent."
+ },
+ {
+  "id": "hidden",
+  "headline": "Hidden leak?",
+  "text": "Damp walls, musty smell, a water bill you can't explain? That's a hidden leak."
+ },
+ {
+  "id": "tank",
+  "headline": "Clean the water tank",
+  "text": "Water tank? Clean and disinfect it every six months, with an approved company."
+ },
+ {
+  "id": "trip",
+  "headline": "Power tripping?",
+  "text": "Power keeps tripping? Don't just reset it. Call a qualified electrician."
+ },
+ {
+  "id": "amc",
+  "headline": "Check your AMC",
+  "text": "Signing a maintenance contract? Check what's covered: spare parts, call-outs, emergencies."
+ },
+ {
+  "id": "save",
+  "headline": "Save this for summer",
+  "text": "Fix small problems before they become big ones. Save this for summer."
+ }
+]

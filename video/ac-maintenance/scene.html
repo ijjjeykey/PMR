@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AC Maintenance Reel</title>
+<style>
+  @font-face { font-family: A; src: url(../node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2); }
+  @font-face { font-family: M; font-weight: 600; src: url(../node_modules/@fontsource/montserrat/files/montserrat-latin-600-normal.woff2); }
+  @font-face { font-family: M; font-weight: 700; src: url(../node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2); }
+  @font-face { font-family: M; font-weight: 800; src: url(../node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2); }
+  :root { --blue: #1b44f2; --ink: #030e1a; --white: #fff; --red: #e8283a; --green: #19c37d; --soft: #eef2ff; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--ink); font-family: M, 'Noto Color Emoji', sans-serif; }
+  .abs { position: absolute; }
+  #stage { position: absolute; inset: 0; overflow: hidden; }
+  #bg { inset: 0; }
+  #grid { inset: 0; background-image: radial-gradient(rgba(255,255,255,.09) 2px, transparent 2.5px); background-size: 44px 44px; }
+  #vig { inset: 0; background: radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0) 45%, rgba(0,0,0,.35) 100%); }
+  #world { inset: 0; transform-origin: 50% 50%; }
+  #man { left: 90px; top: 720px; width: 900px; height: 1200px; overflow: visible; transform-origin: 50% 29%; }
+  .o { stroke: #1a1410; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+
+  #head1 { left: 40px; right: 40px; top: 200px; text-align: center; font-family: A; font-size: 112px; line-height: 1; text-transform: uppercase; }
+  #head1 span { display: inline-block; margin: 0 12px; }
+  #sub { left: 80px; right: 80px; top: 335px; text-align: center; font-weight: 700; font-size: 44px; line-height: 1.3; }
+  #sub span { display: inline-block; margin: 0 6px; }
+
+  .prop { left: 0; top: 0; width: 1080px; height: 1920px; display: none; }
+  .card { position: absolute; background: #fff; color: var(--ink); border-radius: 30px; box-shadow: 0 24px 60px rgba(3,14,26,.25); border: 2px solid #e3e8f5; }
+  .rowi { display: flex; align-items: center; gap: 20px; font-weight: 800; font-size: 38px; padding: 14px 0; }
+  .emo { font-size: 46px; width: 64px; text-align: center; }
+  .chip { position: absolute; display: inline-flex; align-items: center; gap: 16px; padding: 18px 30px; border-radius: 999px; background: #fff; color: var(--ink); font-weight: 800; font-size: 40px; box-shadow: 0 16px 40px rgba(3,14,26,.25); white-space: nowrap; }
+  .tagb { display: inline-block; padding: 8px 18px 6px; background: var(--blue); color: #fff; font-family: A; font-size: 32px; letter-spacing: 1px; transform: skewX(-8deg); text-transform: uppercase; }
+  .box { width: 54px; height: 54px; border-radius: 14px; border: 4px solid #c9d2f5; display: grid; place-items: center; flex: none; }
+  #handle { left: 0; right: 0; top: 140px; text-align: center; font-weight: 700; font-size: 26px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg" class="abs"></div>
+  <div id="grid" class="abs"></div>
+  <div id="world" class="abs">
+    <!-- ===== props behind the character ===== -->
+    <div id="p-leak" class="prop abs">
+      <svg class="abs" style="left:0;top:0" width="1080" height="1920" viewBox="0 0 1080 1920">
+        <g transform="translate(540 640)">
+          <rect x="-290" y="-80" width="580" height="160" rx="34" fill="#f5f7fb" stroke="#1a1410" stroke-width="5"/>
+          <rect x="-290" y="40" width="580" height="40" rx="16" fill="#dfe4ee" stroke="#1a1410" stroke-width="5"/>
+          <path d="M-240 62 H 240" stroke="#9aa3b5" stroke-width="5"/>
+          <circle cx="235" cy="-40" r="9" fill="#19c37d"/>
+          <rect x="-250" y="-52" width="120" height="22" rx="8" fill="#e6eaf2"/>
+        </g>
+        <g id="drops"></g>
+        <g id="warn" transform="translate(860 560)"><circle r="56" fill="#e8283a" stroke="#1a1410" stroke-width="5"/><text y="24" text-anchor="middle" font-family="A" font-size="70" fill="#fff">!</text></g>
+      </svg>
+    </div>
+    <div id="p-causes" class="prop abs">
+      <div class="card" style="left:60px;top:500px;width:680px;padding:28px 36px">
+        <div class="tagb">Possible causes</div>
+        <div class="rowi" id="c1"><span class="emo">🚰</span>Clogged condensate drain</div>
+        <div class="rowi" id="c2"><span class="emo">🛠️</span>Faulty drain pan</div>
+        <div class="rowi" id="c3"><span class="emo">🧊</span>Iced coil / poor airflow</div>
+        <div class="rowi" id="c4" style="color:var(--red)"><span class="emo">⚠️</span>Ceiling damage</div>
+      </div>
+    </div>
+    <div id="p-filter" class="prop abs">
+      <div class="chip" id="f1" style="left:110px;top:520px">📅 <span>DEWA: clean filters</span></div>
+      <div class="chip" id="f2" style="left:300px;top:640px;background:var(--ink);color:#fff">at least <b style="color:#9fb4ff">1× / month</b> in summer</div>
+    </div>
+    <div id="p-thermo" class="prop abs">
+      <svg class="abs" style="left:340px;top:480px" width="400" height="400" viewBox="0 0 400 400">
+        <circle cx="200" cy="200" r="170" fill="#fff" stroke="#1a1410" stroke-width="6"/>
+        <circle cx="200" cy="200" r="136" fill="none" stroke="#e3e8ff" stroke-width="26"/>
+        <circle id="tArc" cx="200" cy="200" r="136" fill="none" stroke="#1b44f2" stroke-width="26" stroke-linecap="round" transform="rotate(135 200 200)" stroke-dasharray="0 855"/>
+        <text id="tNum" x="200" y="230" text-anchor="middle" font-family="A" font-size="110" fill="#030e1a">20°</text>
+        <text x="200" y="285" text-anchor="middle" font-family="M" font-weight="800" font-size="28" fill="#1b44f2">COOLING</text>
+      </svg>
+      <div class="chip" id="t1" style="left:120px;top:880px">💡 +1°C = up to <b style="color:var(--blue)">−5%</b> AC energy</div>
+    </div>
+    <div id="p-hidden" class="prop abs">
+      <div class="chip" id="h1" style="left:70px;top:520px">💧 Damp walls</div>
+      <div class="chip" id="h2" style="left:560px;top:600px">👃 Musty smell</div>
+      <div class="chip" id="h3" style="left:120px;top:700px">🧾 Unexplained water bill</div>
+      <div class="chip" id="h4" style="left:600px;top:790px;background:var(--blue);color:#fff">🔍 Hidden leak</div>
+    </div>
+    <div id="p-tank" class="prop abs">
+      <svg class="abs" style="left:90px;top:500px" width="300" height="380" viewBox="0 0 300 380">
+        <ellipse cx="150" cy="60" rx="120" ry="34" fill="#dfe8ff" stroke="#1a1410" stroke-width="5"/>
+        <path d="M30 60 V 300 A 120 34 0 0 0 270 300 V 60" fill="#fff" stroke="#1a1410" stroke-width="5"/>
+        <path id="water" d="M34 180 Q 90 165 150 180 T 266 180 V 300 A 116 30 0 0 1 34 300 Z" fill="#1b44f2" opacity=".85"/>
+        <path d="M30 60 A 120 34 0 0 0 270 60" fill="none" stroke="#1a1410" stroke-width="5"/>
+        <text id="spark" x="230" y="40" font-size="60">✨</text>
+      </svg>
+      <div id="tk1" class="abs" style="left:420px;top:540px;color:#fff;font-family:A;text-transform:uppercase;line-height:.95"><div style="font-size:64px">every</div><div style="font-size:200px">6</div><div style="font-size:64px">months</div></div>
+      <div class="chip" id="tk2" style="left:120px;top:900px">🧼 Clean &amp; disinfect · approved company</div>
+    </div>
+    <div id="p-trip" class="prop abs">
+      <svg class="abs" style="left:110px;top:500px" width="380" height="380" viewBox="0 0 380 380">
+        <rect x="10" y="10" width="360" height="360" rx="30" fill="#f2f4f8" stroke="#1a1410" stroke-width="6"/>
+        <g id="brk"></g>
+      </svg>
+      <div id="zap" class="abs" style="left:430px;top:470px;font-size:150px">⚡</div>
+      <div class="chip" id="r1" style="left:540px;top:560px;background:var(--ink);color:#fff">🔁 Reset again? ✕</div>
+      <div class="chip" id="r2" style="z-index:5;left:40px;top:1330px">👷 Qualified electrician</div>
+    </div>
+    <div id="p-amc" class="prop abs">
+      <div class="card" style="left:60px;top:490px;width:640px;padding:28px 36px">
+        <div class="tagb">AMC · what's covered?</div>
+        <div class="rowi" id="a1"><div class="box"></div>Covered assets</div>
+        <div class="rowi" id="a2"><div class="box"></div>Spare parts</div>
+        <div class="rowi" id="a3"><div class="box"></div>Call-outs</div>
+        <div class="rowi" id="a4"><div class="box"></div>Emergency response</div>
+      </div>
+    </div>
+    <div id="p-save" class="prop abs">
+      <div class="chip" id="s1" style="left:90px;top:540px">🔧 small fix now</div>
+      <div class="chip" id="s2" style="left:520px;top:650px;background:var(--ink);color:#fff">💸 not a big bill later</div>
+      <div id="s3" class="abs" style="left:130px;top:700px;font-size:170px">🔖</div>
+      <div class="chip" id="s4" style="z-index:5;left:150px;top:1450px;background:#fff;color:var(--blue);font-family:A;font-size:54px;text-transform:uppercase;letter-spacing:1px">Follow @dubai_property_owners</div>
+    </div>
+
+    <!-- ===== character ===== -->
+    <svg id="man" class="abs" viewBox="0 0 600 800">
+      <defs>
+        <linearGradient id="sk" x1="0" x2="1"><stop offset="0" stop-color="#f0c39e"/><stop offset=".6" stop-color="#e5b089"/><stop offset="1" stop-color="#cf966f"/></linearGradient>
+        <linearGradient id="st" x1="0" x2="1"><stop offset="0" stop-color="#2a3b69"/><stop offset=".55" stop-color="#1f2d52"/><stop offset="1" stop-color="#16213e"/></linearGradient>
+        <clipPath id="mclip"><path id="mclipP"/></clipPath>
+        <clipPath id="eL"><ellipse cx="258" cy="212" rx="21" ry="12"/></clipPath>
+        <clipPath id="eR"><ellipse cx="342" cy="212" rx="21" ry="12"/></clipPath>
+      </defs>
+      <g id="torso">
+        <path class="o" d="M262 320 L 262 425 Q 300 445 338 425 L 338 320 Z" fill="#d9a07a"/>
+        <path d="M262 380 Q 300 420 338 380 L 338 425 Q 300 445 262 425 Z" fill="#b97e5c" opacity=".5"/>
+        <path class="o" d="M235 420 L 365 420 L 345 560 L 300 610 L 255 560 Z" fill="#dbe8f7"/>
+        <path class="o" d="M60 800 C 70 600, 110 520, 190 482 L 248 440 L 300 640 L 352 440 L 410 482 C 490 520, 530 600, 540 800 Z" fill="url(#st)"/>
+        <path class="o" d="M248 440 L 300 640 L 258 590 L 214 520 L 236 500 L 218 478 Z" fill="#2c4178"/>
+        <path class="o" d="M352 440 L 300 640 L 342 590 L 386 520 L 364 500 L 382 478 Z" fill="#2c4178"/>
+        <path class="o" d="M262 420 L 300 470 L 278 500 L 240 446 Z" fill="#eef4fb"/>
+        <path class="o" d="M338 420 L 300 470 L 322 500 L 360 446 Z" fill="#eef4fb"/>
+        <circle cx="300" cy="700" r="8" fill="#0d1428"/><circle cx="300" cy="760" r="8" fill="#0d1428"/>
+        <path d="M392 580 L 440 572 L 442 584 L 394 592 Z" fill="#fff" stroke="#1a1410" stroke-width="3"/>
+      </g>
+      <g id="head">
+        <ellipse class="o" cx="216" cy="232" rx="15" ry="27" fill="#e2ab84"/>
+        <ellipse class="o" cx="384" cy="232" rx="15" ry="27" fill="#cf966f"/>
+        <path class="o" d="M218 200 C 218 128, 256 92, 300 92 C 344 92, 382 128, 382 200 C 384 255, 378 300, 362 330 C 346 360, 324 378, 300 378 C 276 378, 254 360, 238 330 C 222 300, 216 255, 218 200 Z" fill="url(#sk)"/>
+        <!-- short boxed beard -->
+        <path d="M221 245 C 224 300, 244 345, 270 366 C 282 376, 292 381, 300 381 C 308 381, 318 376, 330 366 C 356 345, 376 300, 379 245 C 372 282, 360 300, 346 310 C 330 318, 316 316, 300 318 C 284 316, 270 318, 254 310 C 240 300, 228 282, 221 245 Z" fill="#3a281c"/>
+        <path d="M266 306 C 282 294, 318 294, 334 306 C 322 312, 310 309, 300 311 C 290 309, 278 312, 266 306 Z" fill="#3a281c"/>
+        <!-- nose -->
+        <path d="M298 222 C 296 246, 292 260, 290 270 C 296 278, 306 278, 312 270" fill="none" stroke="#a86e4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- mouth -->
+        <path id="mIn" fill="#4a1c1c"/>
+        <g clip-path="url(#mclip)"><rect x="262" y="318" width="76" height="11" fill="#f6f3ee"/><ellipse id="tong" cx="300" cy="350" rx="16" ry="8" fill="#c0605c"/></g>
+        <path id="mLine" fill="none" stroke="#5a2a22" stroke-width="4" stroke-linecap="round"/>
+        <!-- eyes -->
+        <g id="eyeL"><ellipse cx="258" cy="212" rx="21" ry="12" fill="#fbf8f4" class="o" style="stroke-width:3"/>
+          <g clip-path="url(#eL)"><circle cx="259" cy="212" r="10" fill="#5a3a22"/><circle cx="259" cy="212" r="5" fill="#0b0805"/><circle cx="262" cy="208.5" r="3" fill="#fff"/><rect id="lidL" x="234" y="198" width="50" height="0" fill="#e8b48c"/></g></g>
+        <g id="eyeR"><ellipse cx="342" cy="212" rx="21" ry="12" fill="#fbf8f4" class="o" style="stroke-width:3"/>
+          <g clip-path="url(#eR)"><circle cx="341" cy="212" r="10" fill="#5a3a22"/><circle cx="341" cy="212" r="5" fill="#0b0805"/><circle cx="344" cy="208.5" r="3" fill="#fff"/><rect id="lidR" x="318" y="198" width="50" height="0" fill="#dfa883"/></g></g>
+        <path id="winkR" d="M322 214 Q 342 226 362 214" fill="none" stroke="#1a1410" stroke-width="5" stroke-linecap="round" opacity="0"/>
+        <path id="browL" d="M232 186 Q 256 172 284 180 L 283 190 Q 257 183 234 196 Z" fill="#2b1d14"/>
+        <path id="browR" d="M368 186 Q 344 172 316 180 L 317 190 Q 343 183 366 196 Z" fill="#2b1d14"/>
+        <!-- hair: textured quiff, short sides -->
+        <path class="o" d="M214 218 C 204 150, 226 98, 272 80 C 302 68, 346 72, 370 94 C 394 118, 394 172, 386 218 C 380 192, 376 168, 366 150 C 340 142, 300 140, 262 132 C 250 142, 236 162, 228 182 C 224 196, 218 206, 214 218 Z" fill="#2b1d14"/>
+        <path class="o" d="M236 112 C 250 62, 330 46, 372 86 C 346 76, 306 74, 280 92 C 268 86, 252 94, 236 112 Z" fill="#3a281c"/>
+        <path d="M262 132 C 290 120, 330 118, 362 140" stroke="#5b4332" stroke-width="3" fill="none"/>
+        <path d="M280 96 C 310 86, 340 90, 360 104" stroke="#5b4332" stroke-width="3" fill="none"/>
+      </g>
+      <g id="prophold"></g>
+      <g id="armA"></g>
+      <g id="armB"></g>
+    </svg>
+
+    <div id="head1" class="abs"></div>
+    <div id="sub" class="abs"></div>
+  </div>
+  <div id="vig" class="abs"></div>
+  <div id="handle" class="abs">@dubai_property_owners · propertymanagement-review.com</div>
+</div>
+
+<script>
+const T = window.TIMELINE;
+const $ = id => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const eOut = x => 1 - Math.pow(1 - clamp(x), 3);
+const eBack = x => { x = clamp(x); const c = 2.2; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+
+// ---------- hands (wrist at 0,0; fingers toward -y) ----------
+const SK = 'fill="#e8b48c" class="o"';
+const HANDS = {
+  open: `<rect x="-27" y="-104" width="13" height="52" rx="6.5" ${SK}/><rect x="-13" y="-114" width="13" height="60" rx="6.5" ${SK}/><rect x="1" y="-110" width="13" height="56" rx="6.5" ${SK}/><rect x="15" y="-96" width="12" height="42" rx="6" ${SK}/>
+         <path d="M24 -22 C 40 -28, 50 -46, 52 -58 C 54 -66, 44 -68, 40 -60 C 36 -50, 30 -42, 22 -38 Z" ${SK}/>
+         <path d="M-28 -4 C -32 -30, -31 -50, -27 -62 L 27 -62 C 31 -50, 31 -30, 27 -4 Z" ${SK}/>`,
+  point: `<rect x="-26" y="-122" width="15" height="70" rx="7.5" ${SK}/>
+          <rect x="-28" y="-64" width="56" height="62" rx="18" ${SK}/>
+          <path d="M-8 -50 H 22 M -8 -36 H 22 M -8 -22 H 20" stroke="#a86e4d" stroke-width="3" stroke-linecap="round"/>
+          <path d="M-26 -30 C -10 -26, 6 -34, 10 -44 C 12 -52, 0 -54, -6 -46 C -12 -40, -18 -40, -26 -42 Z" ${SK}/>`,
+  thumb: `<rect x="-24" y="-110" width="20" height="58" rx="10" ${SK}/>
+          <rect x="-28" y="-62" width="54" height="60" rx="18" ${SK}/>
+          <path d="M-2 -48 H 22 M -2 -34 H 22 M -2 -20 H 20" stroke="#a86e4d" stroke-width="3" stroke-linecap="round"/>`,
+  fist: `<rect x="-28" y="-62" width="56" height="60" rx="18" ${SK}/>
+         <path d="M-14 -58 V -46 M 0 -58 V -46 M 14 -58 V -46" stroke="#a86e4d" stroke-width="3" stroke-linecap="round"/>`
+};
+function makeArm(g) {
+  g.innerHTML = `<path class="sl0" fill="none" stroke="#1a1410" stroke-width="82" stroke-linecap="round" stroke-linejoin="round"/>
+                 <path class="sl1" fill="none" stroke="#1f2d52" stroke-width="74" stroke-linecap="round" stroke-linejoin="round"/>
+                 <path class="sl2" fill="none" stroke="#2a3b69" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+                 <line class="cuff0" stroke="#1a1410" stroke-width="64"/><line class="cuff" stroke="#eef4fb" stroke-width="56"/>
+                 <g class="hand"></g>`;
+  return { g, sl: [...g.querySelectorAll('.sl0,.sl1,.sl2')], c0: g.querySelector('.cuff0'), c: g.querySelector('.cuff'), h: g.querySelector('.hand'), type: null };
+}
+const ARMS = [makeArm($('armA')), makeArm($('armB'))];
+function setArm(a, sh, el, wr, hand, rot, mirror) {
+  const d = `M${sh[0]} ${sh[1]} L ${el[0]} ${el[1]} L ${wr[0]} ${wr[1]}`;
+  a.sl.forEach(p => p.setAttribute('d', d));
+  const dx = wr[0] - el[0], dy = wr[1] - el[1], L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L;
+  [a.c0, a.c].forEach((c, i) => { c.setAttribute('x1', wr[0] - ux * (i ? 20 : 22)); c.setAttribute('y1', wr[1] - uy * (i ? 20 : 22)); c.setAttribute('x2', wr[0] + ux * (i ? 2 : 4)); c.setAttribute('y2', wr[1] + uy * (i ? 2 : 4)); });
+  if (a.type !== hand) { a.h.innerHTML = HANDS[hand]; a.type = hand; }
+  a.h.setAttribute('transform', `translate(${wr[0]} ${wr[1]}) rotate(${rot}) scale(${mirror ? -1.18 : 1.18} 1.18)`);
+}
+// Shoulders. A = viewer-left arm (character's right), B = viewer-right arm.
+const SA = [190, 478], SB = [410, 478];
+const IDLE_A = { el: [150, 640], wr: [168, 790], hand: 'fist', rot: 180 };
+const IDLE_B = { el: [450, 640], wr: [432, 790], hand: 'fist', rot: 180 };
+const POSES = {
+  shock:   { A: { el: [118, 560], wr: [196, 404], hand: 'open', rot: 12 },  B: { el: [482, 560], wr: [404, 404], hand: 'open', rot: -12 } },
+  stop:    { A: IDLE_A, B: { el: [520, 560], wr: [462, 392], hand: 'open', rot: -6 } },
+  pointL:  { A: { el: [112, 470], wr: [70, 360], hand: 'point', rot: -38 }, B: IDLE_B },
+  hold:    { A: { el: [110, 690], wr: [168, 610], hand: 'fist', rot: 80 }, B: { el: [490, 690], wr: [432, 610], hand: 'fist', rot: -80 } },
+  pointUp: { A: IDLE_A, B: { el: [520, 570], wr: [492, 410], hand: 'point', rot: -4 } },
+  think:   { A: { el: [170, 660], wr: [392, 660], hand: 'fist', rot: 95 }, B: { el: [420, 650], wr: [330, 452], hand: 'fist', rot: -22 }, order: 'AB' },
+  cross:   { A: { el: [150, 640], wr: [404, 612], hand: 'fist', rot: 100 }, B: { el: [450, 640], wr: [196, 612], hand: 'fist', rot: -100 }, order: 'BA' },
+  explain: { A: { el: [120, 640], wr: [118, 500], hand: 'open', rot: -28 }, B: { el: [480, 640], wr: [482, 500], hand: 'open', rot: 28 } },
+  thumbs:  { A: IDLE_A, B: { el: [510, 630], wr: [478, 488], hand: 'thumb', rot: 0 } }
+};
+
+// ---------- scenes ----------
+const SCN = {
+  leak:   { bg: 'ink',   pose: 'shock',   ex: 'shock',   cam: [1.15, 0, 40] },
+  stop:   { bg: 'red',   pose: 'stop',    ex: 'stern',   cam: [1.45, -110, 0] },
+  causes: { bg: 'white', pose: 'pointL',  ex: 'talk',    cam: [1.05, 150, 60] },
+  filter: { bg: 'blue',  pose: 'hold',    ex: 'smile',   cam: [1.1, 0, 30] },
+  thermo: { bg: 'ink',   pose: 'pointUp', ex: 'wink',    cam: [1.0, -60, 150] },
+  hidden: { bg: 'white', pose: 'think',   ex: 'skeptic', cam: [1.15, 0, 40] },
+  tank:   { bg: 'blue',  pose: 'pointL',  ex: 'smile',   cam: [1.05, 200, 70] },
+  trip:   { bg: 'red',   pose: 'cross',   ex: 'stern',   cam: [1.1, 170, 90] },
+  amc:    { bg: 'white', pose: 'explain', ex: 'talk',    cam: [1.05, 150, 60] },
+  save:   { bg: 'blue',  pose: 'thumbs',  ex: 'wink',    cam: [1.15, 0, 30] }
+};
+const BG = {
+  ink:   ['radial-gradient(ellipse at 50% 40%, #0d1d3a, #030e1a 70%)', '#fff', 'rgba(255,255,255,.6)', 'rgba(255,255,255,.09)'],
+  blue:  ['radial-gradient(ellipse at 50% 40%, #3a62ff, #1b44f2 55%, #1233c4)', '#fff', 'rgba(255,255,255,.7)', 'rgba(255,255,255,.12)'],
+  red:   ['radial-gradient(ellipse at 50% 40%, #ff4d5c, #e8283a 55%, #b5121f)', '#fff', 'rgba(255,255,255,.75)', 'rgba(255,255,255,.12)'],
+  white: ['radial-gradient(ellipse at 50% 40%, #ffffff, #eef1f8 70%)', '#030e1a', 'rgba(3,14,26,.5)', 'rgba(3,14,26,.07)']
+};
+// expressions: brow offsets, eye openness, mouth base [width, corner lift, min open]
+const EX = {
+  talk:    { bL: [0, 0], bR: [0, 0], eye: 1, mouth: [24, 0, 1] },
+  smile:   { bL: [-3, 0], bR: [-3, 0], eye: .85, mouth: [28, -7, 2] },
+  shock:   { bL: [-12, -6], bR: [-12, 6], eye: 1.35, mouth: [14, 2, 14] },
+  stern:   { bL: [4, 12], bR: [4, -12], eye: .8, mouth: [22, 4, 1] },
+  skeptic: { bL: [2, 6], bR: [-10, 4], eye: .7, mouth: [20, 2, 1] },
+  wink:    { bL: [-4, 0], bR: [-6, 0], eye: .9, mouth: [28, -8, 2], wink: true }
+};
+// cue = word index in the line at which an element pops; sfx played at the same moment
+const CUES = {
+  leak:   [['warn', 6, 'alert']],
+  causes: [['c1', 1, 'pop'], ['c2', 4, 'pop'], ['c3', 7, 'pop'], ['c4', 13, 'alert']],
+  filter: [['f1', 2, 'pop'], ['f2', 8, 'pop']],
+  thermo: [['t1', 6, 'pop']],
+  hidden: [['h1', 0, 'pop'], ['h2', 2, 'pop'], ['h3', 5, 'pop'], ['h4', 12, 'alert']],
+  tank:   [['tk1', 6, 'pop'], ['tk2', 11, 'pop']],
+  trip:   [['r1', 3, 'alert'], ['r2', 7, 'pop']],
+  amc:    [['a1', 5, 'tick'], ['a2', 7, 'tick'], ['a3', 9, 'tick'], ['a4', 10, 'tick']],
+  save:   [['s1', 1, 'pop'], ['s2', 6, 'pop'], ['s3', 8, 'pop'], ['s4', -1, 'whoosh']]
+};
+const SHOW = { Deewa: 'DEWA' };
+const weight = w => Math.max(1, (w.toLowerCase().match(/[aeiouy]+/g) || []).length) + (/[,.?!:]$/.test(w) ? 0.9 : 0);
+T.scenes.forEach((s, i) => {
+  s.words = s.text.split(/\s+/);
+  const tot = s.words.reduce((a, w) => a + weight(w), 0); let acc = 0;
+  s.wt = s.words.map(w => { const st = s.start + (s.end - s.start) * acc / tot; acc += weight(w); return st; });
+  s.cut = i === 0 ? 0 : s.start - 0.12;
+});
+const cueTime = (s, w) => w < 0 ? s.end + 0.3 : s.wt[Math.min(w, s.wt.length - 1)];
+// exported for the audio mixer
+window.SFX = T.scenes.flatMap((s, i) => [...(i ? [['whoosh', s.cut]] : []), ...(CUES[s.id] || []).map(([, w, k]) => [k, cueTime(s, w)])]);
+
+// drops for the leak scene
+const drops = $('drops');
+for (let i = 0; i < 6; i++) { const e = document.createElementNS(NS, 'path'); e.setAttribute('d', 'M0 -16 C 8 -4, 12 4, 12 10 A 12 12 0 0 1 -12 10 C -12 4, -8 -4, 0 -16 Z'); e.setAttribute('fill', '#5fa8ff'); e.setAttribute('stroke', '#1a1410'); e.setAttribute('stroke-width', '3'); drops.appendChild(e); }
+// breaker switches
+const brk = $('brk');
+for (let i = 0; i < 4; i++) brk.innerHTML += `<rect x="${40 + i * 80}" y="80" width="60" height="220" rx="12" fill="#fff" stroke="#1a1410" stroke-width="5"/><rect id="sw${i}" x="${52 + i * 80}" y="100" width="36" height="80" rx="8" fill="${i === 2 ? '#e8283a' : '#1b44f2'}" stroke="#1a1410" stroke-width="4"/>`;
+
+let curScene = null;
+function enterScene(s) {
+  const c = SCN[s.id], b = BG[c.bg];
+  $('bg').style.background = b[0];
+  $('grid').style.backgroundImage = `radial-gradient(${b[3]} 2px, transparent 2.5px)`;
+  $('head1').style.color = b[1]; $('handle').style.color = b[2];
+  $('head1').innerHTML = s.headline.split(' ').map(w => `<span>${w}</span>`).join('');
+  $('sub').innerHTML = s.words.map(w => `<span>${SHOW[w.replace(/[.,?!:]/g, '')] ? w.replace(/Deewa/, 'DEWA') : w}</span>`).join('');
+  document.querySelectorAll('.prop').forEach(p => p.style.display = 'none');
+  const p = $('p-' + s.id); if (p) p.style.display = 'block';
+  $('prophold').innerHTML = s.id === 'filter'
+    ? `<g transform="translate(300 600)"><rect x="-150" y="-90" width="300" height="180" rx="14" fill="#f3f5f9" class="o" style="stroke-width:5"/>
+       <path d="${Array.from({ length: 13 }, (_, i) => `M${-130 + i * 21.6} -72 V 72`).join(' ')} ${Array.from({ length: 7 }, (_, i) => `M-136 ${-66 + i * 22} H 136`).join(' ')}" stroke="#b9c2d6" stroke-width="3"/>
+       <g id="dust">${Array.from({ length: 16 }, (_, i) => `<circle cx="${-120 + (i * 53) % 240}" cy="${-60 + (i * 37) % 120}" r="${6 + i % 4}" fill="#9a8f7a"/>`).join('')}</g></g>` : '';
+  curScene = s.id;
+}
+
+window.render = function (t) {
+  const fi = Math.min(T.mouth.length - 1, Math.floor(t * T.fps));
+  const m = T.mouth[fi];
+  let si = 0; T.scenes.forEach((s, i) => { if (t >= s.cut) si = i; });
+  const S = T.scenes[si], C = SCN[S.id], X = EX[C.ex];
+  if (curScene !== S.id) enterScene(S);
+  const lt = t - S.cut;
+
+  // cut transition: blur + zoom settle, like the reference edit
+  const tin = eOut(prog(lt, 0, 0.28));
+  const blur = (1 - tin) * 16;
+  $('world').style.filter = blur > 0.2 ? `blur(${blur}px)` : 'none';
+  $('world').style.transform = `scale(${1 + (1 - tin) * 0.06})`;
+
+  // camera on the character: per-scene framing + slow push + punch on cue words
+  let punch = 0; (CUES[S.id] || []).forEach(([, w]) => { const d = t - cueTime(S, w); if (d > 0 && d < 0.25) punch = Math.max(punch, Math.sin(d / 0.25 * Math.PI)); });
+  const [cs, cx, cy] = C.cam;
+  const pop = eBack(prog(lt, 0.02, 0.4));
+  const sc = cs * (0.9 + 0.1 * pop) * (1 + lt * 0.012) * (1 + punch * 0.025);
+  const bob = Math.sin(t * 2.2) * 4 + m * 6;
+  $('man').style.transform = `translate(${cx}px, ${cy + (1 - pop) * 90 + bob}px) scale(${sc}) rotate(${(1 - pop) * -3 + Math.sin(t * 0.9) * 0.6}deg)`;
+
+  // head motion (eyes stay fixed in the face; the whole head moves a little)
+  const nod = Math.sin(t * 5.1) * m * 3, tilt = Math.sin(t * 1.1) * 1.5 + Math.sin(t * 3.7) * m * 1.5;
+  $('head').setAttribute('transform', `rotate(${tilt} 300 420) translate(0 ${nod})`);
+
+  // arms with speech-driven gesture motion
+  const P = POSES[C.pose];
+  const gx = Math.sin(t * 6.3) * 5 * m, gy = Math.cos(t * 5.1) * 7 * m;
+  const wob = (q, k) => [q[0] + gx * k, q[1] + gy * k];
+  const order = P.order === 'BA' ? [['B', 0], ['A', 1]] : [['A', 0], ['B', 1]];
+  order.forEach(([side, slot]) => {
+    const a = P[side], sh = side === 'A' ? SA : SB;
+    setArm(ARMS[slot], sh, wob(a.el, .4), wob(a.wr, 1), a.hand, a.rot + Math.sin(t * 4.3) * 4 * m, side === 'A');
+  });
+
+  // face
+  const blinkTimes = [1.6, 4.4, 7.9, 11.2, 14.6, 17.3, 20.9, 24.2, 27.8, 31.1, 34.6, 38.0, 41.5, 44.0];
+  let lid = 0; blinkTimes.forEach(b => { const d = Math.abs(t - b); if (d < 0.09) lid = Math.max(lid, 1 - d / 0.09); });
+  const open = clamp(X.eye, 0, 1.4);
+  const lidH = Math.max(lid * 24, (1 - Math.min(open, 1)) * 12);
+  $('lidL').setAttribute('height', lidH); $('lidR').setAttribute('height', lidH);
+  const es = open > 1 ? open : 1;
+  $('eyeL').setAttribute('transform', `translate(258 212) scale(${es}) translate(-258 -212)`);
+  const winking = X.wink && lt > 0.15 && lt < 0.9;
+  $('eyeR').setAttribute('transform', `translate(342 212) scale(${es}) translate(-342 -212)`);
+  $('eyeR').style.opacity = winking ? 0 : 1; $('winkR').style.opacity = winking ? 1 : 0;
+  const bAmp = Math.max(0, m - 0.6) * -8;
+  $('browL').setAttribute('transform', `translate(0 ${X.bL[0] + bAmp}) rotate(${X.bL[1]} 284 185)`);
+  $('browR').setAttribute('transform', `translate(0 ${X.bR[0] + bAmp}) rotate(${X.bR[1]} 316 185)`);
+  // parametric mouth
+  const [w0, lift, mo] = X.mouth;
+  const o = mo + 18 * m, w = w0 - 4 * m, my = 322;
+  const top = `M${300 - w} ${my + lift} Q 300 ${my - 4 - o * 0.15} ${300 + w} ${my + lift}`;
+  const bot = `Q 300 ${my + o * 1.25 + (lift < 0 ? 8 : 2)} ${300 - w} ${my + lift}`;
+  $('mIn').setAttribute('d', `${top} ${bot} Z`); $('mclipP').setAttribute('d', `${top} ${bot} Z`);
+  $('mLine').setAttribute('d', top);
+  $('tong').setAttribute('cy', my + o * 1.1);
+
+  // headline: words blur in
+  [...$('head1').children].forEach((e, i) => { const p = eOut(prog(lt, 0.05 + i * 0.08, 0.35 + i * 0.08)); e.style.filter = `blur(${(1 - p) * 14}px)`; e.style.opacity = p; e.style.transform = `translateY(${(1 - p) * 30}px)`; });
+  // spoken line: words appear as they are said
+  [...$('sub').children].forEach((e, i) => { const p = eOut(prog(t, S.wt[i] - 0.05, S.wt[i] + 0.18)); e.style.opacity = p * (t > (S.wt[i + 1] || 1e9) ? 0.8 : 1); e.style.filter = `blur(${(1 - p) * 10}px)`; });
+  $('sub').style.color = BG[C.bg][1];
+
+  // cue-driven pops
+  (CUES[S.id] || []).forEach(([id, wi]) => {
+    const e = $(id); if (!e) return; const p = eBack(prog(t, cueTime(S, wi) - 0.05, cueTime(S, wi) + 0.3));
+    if (id === 'warn') { e.setAttribute('transform', `translate(860 560) scale(${clamp(p, 0, 1.3)})`); return; }
+    e.style.opacity = clamp(p * 1.4); e.style.transform = `scale(${0.6 + 0.4 * p})`; e.style.transformOrigin = '30% 50%';
+    const box = e.querySelector('.box'); if (box) { const on = p > 0.05; box.style.background = on ? 'var(--blue)' : 'transparent'; box.style.borderColor = on ? 'var(--blue)' : '#c9d2f5'; box.innerHTML = on ? '<svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>' : ''; e.style.opacity = 0.35 + 0.65 * clamp(p * 1.4); e.style.transform = 'none'; }
+  });
+  // scene-specific animation
+  if (S.id === 'leak') [...drops.children].forEach((d, i) => { const ph = ((t * 1.2 + i * 0.37) % 1); const x = 330 + i * 80; d.setAttribute('transform', `translate(${x} ${730 + ph * 180}) scale(${1 + ph * 0.3})`); d.setAttribute('opacity', 1 - ph * 0.8); });
+  if (S.id === 'thermo') { const p = eOut(prog(t, cueTime(S, 0), cueTime(S, 2) + 0.2)); $('tNum').textContent = Math.round(20 + 4 * p) + '°'; $('tArc').setAttribute('stroke-dasharray', `${(0.35 + 0.35 * p) * 641} 855`); }
+  if (S.id === 'filter') { const d = $('dust'); if (d) d.style.opacity = 1 - eOut(prog(t, cueTime(S, 4), cueTime(S, 8))); }
+  if (S.id === 'tank') { $('water').setAttribute('d', `M34 180 Q 90 ${165 + Math.sin(t * 4) * 8} 150 180 T 266 180 V 300 A 116 30 0 0 1 34 300 Z`); $('spark').style.opacity = 0.5 + 0.5 * Math.sin(t * 6); }
+  if (S.id === 'trip') { const tr = prog(t, cueTime(S, 2), cueTime(S, 2) + 0.15); $('sw2').setAttribute('y', 100 + tr * 100); $('zap').style.opacity = tr > 0 ? (Math.sin(t * 20) > 0 ? 1 : 0.4) : 0; $('zap').style.transform = `rotate(${Math.sin(t * 30) * 6}deg)`; }
+  if (S.id === 'stop' || S.id === 'trip') { const sh = Math.max(0, 1 - lt / 0.35) * 10; $('stage').style.transform = `translate(${Math.sin(t * 90) * sh}px, ${Math.cos(t * 70) * sh}px)`; } else $('stage').style.transform = 'none';
+};
+</script>
+</body>
+</html>

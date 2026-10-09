@@ -17,7 +17,9 @@ cfg = sherpa_onnx.OfflineTtsConfig(model=sherpa_onnx.OfflineTtsModelConfig(
     num_threads=4))
 tts = sherpa_onnx.OfflineTts(cfg)
 out_dir.mkdir(parents=True, exist_ok=True)
-for s in json.loads((Path(__file__).parent / "script.json").read_text()):
+import os
+script = Path(os.environ.get("REEL", Path(__file__).parent)) / "script.json"
+for s in json.loads(script.read_text()):
     a = tts.generate(s["text"], sid=sid, speed=speed)
     x = np.clip(np.array(a.samples), -1, 1)
     with wave.open(str(out_dir / f"{s['id']}.wav"), "wb") as w:

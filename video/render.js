@@ -10,8 +10,11 @@ const fs = require('fs'), path = require('path');
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   await page.addInitScript(([t, c]) => { window.TIMELINE = t; window.COVER = c; }, [tl, flag === '--cover']);
-  await page.goto('file://' + path.join(__dirname, 'scene.html'));
+  await page.goto('file://' + path.resolve(process.env.SCENE || path.join(__dirname, 'scene.html')));
   await page.evaluate(() => document.fonts.ready);
+  const sfx = await page.evaluate(() => window.SFX || []);
+  fs.writeFileSync(path.join(buildDir, 'sfx.json'), JSON.stringify(sfx));
+  if (flag === '--sfx') return browser.close();
   if (flag === '--cover') {
     await page.evaluate(() => render(4.45));
     await page.evaluate(() => { const m = document.getElementById('man'); m.style.transform = 'translateY(180px)'; m.style.opacity = 1; });
@@ -27,7 +30,7 @@ const fs = require('fs'), path = require('path');
   }
   const n = Math.round(tl.duration * tl.fps);
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(tl.fps), '-i', '-',
-    '-i', path.join(buildDir, 'mix.wav'), '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
+    '-i', path.join(buildDir, process.env.AUDIO || 'mix.wav'), '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
     '-c:a', 'aac', '-b:a', '192k', '-ar', '44100', '-shortest', '-movflags', '+faststart', out], { stdio: ['pipe', 'inherit', 'inherit'] });
   for (let f = 0; f < n; f++) {
     await page.evaluate(t => render(t), f / tl.fps);

@@ -10,7 +10,10 @@ here = Path(__file__).parent
 vo_dir, out_dir = Path(sys.argv[1]), Path(sys.argv[2])
 FPS, TOTAL, LEAD = 30, 30.0, 0.35
 GAPS = {"hook": 0.4, "who": 0.32, "paid": 0.32, "fee": 0.3, "direct": 0.38}  # breath after each line
-scenes = json.loads((here / "script.json").read_text())
+import os
+scenes = json.loads((Path(os.environ.get("REEL", here)) / "script.json").read_text())
+TOTAL = float(os.environ.get("TOTAL", TOTAL))
+GAPS = json.loads(os.environ["GAPS"]) if "GAPS" in os.environ else GAPS
 
 
 def read(p):
